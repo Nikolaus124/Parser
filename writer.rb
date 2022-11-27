@@ -17,7 +17,6 @@ class Writer
 	def to_json
 		remove_file('cars.json')
 		File.open('cars.json', 'w+') { |f| f.puts objects.to_json }
-		
 	end
 
 	def to_csv

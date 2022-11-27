@@ -10,9 +10,9 @@ class Car
       @fuel = attributes.fetch(:fuel, nil)
       @gear_type = attributes.fetch(:gear_type, nil)
       @time = attributes.fetch(:time, nil)
-   end
+	end
 
-   def print_car
+   	def print_car
    		puts title 
 		puts price
 		puts mileage
