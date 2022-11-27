@@ -4,11 +4,13 @@ require 'json'
 require 'pry'
 require_relative 'data'
 require_relative 'car'
-
-include ApplicationData
+require_relative 'writer'
 
 class Parser
+	include ApplicationData
 	attr_reader :car_brand, :search_status, :amount
+
+	RESULTS = []
 
 	def initialize(car_brand, search_status, amount)
     	@car_brand = car_brand
@@ -31,9 +33,10 @@ class Parser
 	def get_data_by_advertisement
 		doc = html_response(set_url)
 		doc.css('.content-bar').each_with_index do |car, index|
-			return if index == amount
+			break if index == amount
 			parse_object(car)
 		end
+		write_to_files
 	end
 
 	def get_data_by_pages
@@ -44,6 +47,7 @@ class Parser
 				parse_object(car)
 			end	
 		end
+		write_to_files
 	end
 
 	def html_response(link)
@@ -70,7 +74,8 @@ class Parser
 			params[:time] = map_object(car.css('.footer_ticket')).join(',')
 		end
 		car = Car.new(params)
-		car.print_object
+		car.print_car
+		RESULTS << car.map_car
 	end
 
 	def map_object(attribute)
@@ -87,5 +92,10 @@ class Parser
 
 	def set_car_brand
 		MAIN_LINK + car_brand
+	end
+
+	def write_to_files
+		writer = Writer.new(RESULTS)
+		writer.write_objects
 	end
 end

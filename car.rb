@@ -1,5 +1,5 @@
 class Car
-	attr_accessor :title, :price, :mileage, :location, 
+	attr_reader :title, :price, :mileage, :location, 
 				  :fuel, :gear_type, :time
 
 	def initialize(attributes)
@@ -12,8 +12,7 @@ class Car
       @time = attributes.fetch(:time, nil)
    end
 
-   def print_object
-   		binding.pry
+   def print_car
    		puts title 
 		puts price
 		puts mileage
@@ -26,5 +25,17 @@ class Car
 
 	def attrs
     	instance_variables.map{|ivar| instance_variable_get ivar}
+	end
+
+	def map_car
+		{
+			'Назва оголошення':	title,
+      		'Ціна': price,
+      		'Пробіг': mileage,
+      		'Локація': location,
+      		'Тип палива': fuel,
+      		'Коробка': gear_type,
+      		'Час створення оголошення': time
+		}
 	end
 end
